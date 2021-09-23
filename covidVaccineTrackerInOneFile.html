@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>COVid-19</title>
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <style>
+      body {
+         text-align: center;
+         font-weight: 600;
+         font-size: large;
+         color: #ffed89;
+         background-color: #810b0b;
+      }
+
+      li {
+         font-weight: 800;
+         text-align: left;
+         color: rgb(74, 222, 241);
+         font-size: large;
+      }
+
+      h1,
+      h2 {
+         text-align: center;
+         border-bottom: #ffed89 solid;
+      }
+   </style>
+</head>
+
+<body>
+   <h1>Secrch by Date & Pincode (Max 10 location@ a time)</h1>
+   <h2>For DPL Friends (Got error if search @ holiday) </h2>
+   <form id="form1">
+      <label for="sdate">Enter the Date:</label>
+      <input id="sdate" name="datehere" placeholder="dd-mm-yyyy">
+      <label>Enter your Pin-Code:</label>
+      <input type="number" id="pin" name="pinhere" placeholder="110052">
+      <button id="btn">search</button>
+   </form>
+
+   <script>
+      // JavaScript start from here till closer tag 
+
+      const form = document.querySelector('#form1') //Selecting html tags and using inside JS 
+      const button = document.querySelector('#btn')
+
+      button.addEventListener('click', async function (e) {
+         e.preventDefault();
+         try {
+            let date = form.elements.datehere.value;
+            let pin = form.elements.pinhere.value;
+            const res = await axios.get(
+               `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${date}`
+            );
+            looping(res.data);
+         } catch (error) {
+            // console.log("YOU GOR AN ERROR!!!!!"+error);
+            const err1 = document.createElement('li')
+            // const err = error;
+            err1.innerText = error;
+            document.body.append(err1);
+         }
+      })
+      let looping = (rrrr) => {
+         for (let i = 0; i < 10; i++) {
+            const name1 = document.createElement('li')
+            const address1 = document.createElement('li')
+            const fee1 = document.createElement('li')
+            const frist1 = document.createElement('li')
+            const sec1 = document.createElement('li')
+            const Total1 = document.createElement('li')
+            const Vaccine1 = document.createElement('li')
+
+            const name = (`Name- ${rrrr.sessions[i].name}`);
+            const address = (`Address- ${rrrr.sessions[i].address}`);
+            const fee = (`Fee- ${rrrr.sessions[i].fee_type}`);
+            const frist = (`Frist dose available- ${rrrr.sessions[i].available_capacity_dose1}`);
+            const sec = (`Secound dose available- ${rrrr.sessions[i].available_capacity_dose2}`);
+            const Total = (`Total dose available- ${rrrr.sessions[i].available_capacity}`);
+            const Vaccine = (`Vaccine- ${rrrr.sessions[i].vaccine}`);
+
+            name1.innerText = name;
+            address1.innerText = address;
+            fee1.innerText = fee;
+            frist1.innerText = frist;
+            sec1.innerText = sec;
+            Total1.innerText = Total;
+            Vaccine1.innerText = Vaccine;
+
+            document.body.append(name1);
+            document.body.append(address1);
+            document.body.append(fee1);
+            document.body.append(frist1);
+            document.body.append(sec1);
+            document.body.append(Total1);
+            document.body.append(Vaccine1);
+            document.body.append('CK_Tiwari:');
+            document.body.append(
+               "----------------------------------------------------------------------------------------");
+         }
+      }
+   </script>
+</body>
+
+</html>
